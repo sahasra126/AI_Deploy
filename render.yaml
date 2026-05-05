@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ai-digital-footprint-backend
+    env: python
+    plan: free
+    buildCommand: "pip install -r backend/requirements.txt && python -m spacy download en_core_web_sm"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: MONGODB_URL
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: privacy_analyzer
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: '["http://localhost:5173"]'
+      - key: DEBUG
+        value: "false"
+      - key: SPACY_MODEL
+        value: en_core_web_sm
