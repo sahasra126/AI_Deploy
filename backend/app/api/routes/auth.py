@@ -46,7 +46,7 @@ async def get_user_by_email(email: str) -> UserInDB | None:
         return None
     else:
         # MongoDB storage
-        db = await get_database()
+        db = get_database()
         user_data = await db.users.find_one({"email": email})
         if user_data:
             user_data["user_id"] = str(user_data.pop("_id"))
@@ -73,7 +73,7 @@ async def create_user(email: str, password: str, full_name: str | None = None) -
         await memory_insert_one("users", user_data)
     else:
         # MongoDB storage
-        db = await get_database()
+        db = get_database()
         # Use user_id as _id for consistency
         mongo_data = user_data.copy()
         mongo_data["_id"] = user_id
